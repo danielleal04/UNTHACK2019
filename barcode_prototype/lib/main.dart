@@ -6,9 +6,16 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+//
+import 'package:barcode_prototype/login.dart';
+
+// All Global Variables 
+var firstName = TextEditingController(); 
+var lastName = TextEditingController(); 
+
 
 void main() {
-  runApp(new MyApp());
+  runApp(new Login());
 }
 
 class MyApp extends StatefulWidget {
