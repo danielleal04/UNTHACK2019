@@ -11,8 +11,7 @@ import 'package:barcode_prototype/login.dart';
 
 // All Global Variables 
 var firstName = TextEditingController(); 
-var lastName = TextEditingController(); 
-
+var lastName = TextEditingController();
 
 void main() => runApp(new MyApp());
 

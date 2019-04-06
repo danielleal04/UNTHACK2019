@@ -74,7 +74,7 @@ class Login extends StatelessWidget {
                 textFormat(lastName, "Last Name"),
                 SizedBox(height: 10.0), 
                 RaisedButton(
-                  child: Text("login"),
+                  child: Text("scan"),
 
                   onPressed: () {
 

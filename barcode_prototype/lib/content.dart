@@ -22,71 +22,91 @@ class _Content extends State<Content> {
 
   Future<Map<String,dynamic>> getData() async {
 
-  var url = "https://api.barcodelookup.com/v2/products?barcode=${barcode}&formatted=y&key=${token}";
-  var response = await http.get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
-  var jsondata = jsonDecode(response.body); 
+    var url = "https://api.barcodelookup.com/v2/products?barcode=${barcode}&formatted=y&key=${token}";
+    var response = await http.get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    var jsondata = jsonDecode(response.body); 
 
-  print(jsondata.toString());
-  return jsondata; 
+    print(jsondata.toString());
+    return jsondata; 
 
-}
-
-  File galleryFile;
-
-  imageSelectorGallery() async {
-    galleryFile = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-// maxHeight: 50.0,
-// maxWidth: 50.0,
-    );
-    print("You selected gallery image : " + galleryFile.path);
-    setState(() {});
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-          appBar: new AppBar(
-            title: new Text('Scan Barcode'),
-          ),
-          body: new Center(
-            child: new Column(
-              children: <Widget>[
-                new Container(
-                  child: new RaisedButton(
-                      onPressed: () {
+  FutureBuilder<Map<String,dynamic>> displayInfo (Function function) {
 
-                        barcodeScanning(); 
+    return FutureBuilder(
+      future: function(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return Container (
+              
+              decoration: BoxDecoration(
 
-                      }, child: new Text("Capture image")),
-                  padding: const EdgeInsets.all(8.0),
+                border: Border(
+                  bottom: BorderSide(
+
+                    color: Colors.black12,
+
+                  )
                 ),
-                new Padding(
-                  padding: const EdgeInsets.all(8.0),
-                ),
-                new Text("Barcode Number after Scan : " + barcode),
 
-                new SizedBox(height: 30,),
-                // displayImage(),
-              ],
-            ),
-          )),
-    );
+              ),
+
+              child: Padding (
+                padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                child: Row (
+
+                  children: <Widget>[
+                    Flexible (
+
+                      child: Container(
+                        child: Text.rich(
+                          TextSpan(
+
+                            children: <TextSpan> [
+
+                              TextSpan(
+                                text: "${snapshot.data['products'][0]['product_name']}\n\n", 
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              
+                              TextSpan(
+                                text: "Barcode: ${barcode}\n\n",                          
+                                style: TextStyle(fontWeight: FontWeight.w400), 
+                              ),
+
+                              TextSpan(
+                                text: "Description: ${snapshot.data['products'][0]['description']}\n\n",                          
+                                style: TextStyle(fontWeight: FontWeight.w400), 
+                              ),
+
+                              TextSpan(
+                                text: "Ingredients: ${snapshot.data['products'][0]['ingredients']}",                          
+                                style: TextStyle(fontWeight: FontWeight.w400), 
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  ],
+                )
+              )
+            );
+          case ConnectionState.none: 
+            return Center (child: Text("No information to show"),);
+          default:
+            return Center(child: CircularProgressIndicator());
+        }
+      },
+    ); 
+
   }
 
-  Widget displayImage() {
-    return new SizedBox(
-      height: 300.0,
-      width: 400.0,
-      child: galleryFile == null
-          ? new Text('Sorry nothing to display')
-          : new Image.file(galleryFile),
-    );
-  }
-
-// Method for scanning barcode....
-  Future barcodeScanning() async {
+  // Method for scanning barcode....
+Future barcodeScanning() async {
 //imageSelectorGallery();
 
     try {
@@ -108,5 +128,36 @@ class _Content extends State<Content> {
     } catch (e) {
       setState(() => this.barcode = 'Unknown error: $e');
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      home: new Scaffold(
+          appBar: new AppBar(
+            title: new Text('Scan Barcode'),
+          ),
+          body: new Center(
+            child: new Column(
+              children: <Widget>[
+                new Container(
+                  child: new RaisedButton(
+                      onPressed: () {
+
+                        barcodeScanning(); 
+
+                      }, child: new Text("Capture image")),
+                  padding: const EdgeInsets.all(8.0),
+                ),
+                displayInfo(getData), // displays info 
+                new Padding(
+                  padding: const EdgeInsets.all(8.0),
+                ),
+
+                new SizedBox(height: 30,),
+              ],
+            ),
+          )),
+    );
   }
 }
