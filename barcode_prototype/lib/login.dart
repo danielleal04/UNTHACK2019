@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 //
 import 'package:barcode_prototype/main.dart';
+import 'package:barcode_prototype/content.dart'; 
 
 Container textFormat (input, helper) {
 
@@ -77,7 +78,7 @@ class Login extends StatelessWidget {
 
                   onPressed: () {
 
-                    print("you pressed me");  
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => Content())); 
 
                   }, 
 
