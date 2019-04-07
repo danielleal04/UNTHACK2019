@@ -35,7 +35,31 @@ Container textFormat (input, helper) {
   );
 }
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => new _LoginState();
+}
+
+class _LoginState extends State<Login> {
+
+  ListView listsAllergies () {
+
+    return ListView(
+      scrollDirection: Axis.vertical,
+        children: values.keys.map((String key) {
+          return new CheckboxListTile(
+            title: new Text(key),
+            value: values[key],
+            onChanged: (bool value) {
+              setState(() {
+                values[key] = value;
+              });
+            },
+          );
+        }).toList(),
+    ); 
+
+  }
 
   final loginTopBar = new AppBar(
     backgroundColor: Colors.white, 
@@ -72,13 +96,17 @@ class Login extends StatelessWidget {
                 textFormat(firstName, "First Name"),
                 SizedBox(height: 10.00), 
                 textFormat(lastName, "Last Name"),
-                SizedBox(height: 10.0), 
+                SizedBox(height: 30.0), 
+                Container(height: 400, width: 300, 
+                  child: listsAllergies()
+                ),
+                SizedBox(height: 30.0,),
                 RaisedButton(
                   child: Text("scan"),
 
                   onPressed: () {
 
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => Content())); 
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Content())); 
 
                   }, 
 
@@ -93,4 +121,5 @@ class Login extends StatelessWidget {
 
     );
   }
+
 }
