@@ -97,7 +97,7 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 10.00), 
                 textFormat(lastName, "Last Name"),
                 SizedBox(height: 30.0), 
-                Container(height: 400, width: 300, 
+                Container(height: 200, width: 300, 
                   child: listsAllergies()
                 ),
                 SizedBox(height: 30.0,),
