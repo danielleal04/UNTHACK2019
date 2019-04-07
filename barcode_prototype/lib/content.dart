@@ -31,7 +31,7 @@ class _Content extends State<Content> {
 
     for (int i = 0; i < values.length; i++){
 
-      if (lowerIngredients.contains(entryList[i].key)) 
+      if (lowerIngredients.contains(entryList[i].key) && entryList[i].value) 
       {
 
         allergensFound = allergensFound + entryList[i].key.toString() + " "; 
@@ -206,13 +206,9 @@ Future barcodeScanning() async {
     return new MaterialApp(
       home: new Scaffold(
           appBar: new AppBar(
-            title: new Text('Scan Barcode'),
+            title: new Text('Tap to Scan'),
           ),
-          body: Column(
-
-              children: <Widget>[
-
-                Center(
+          body: Center(
 
                   child: SizedBox(
                     height: 200.0,
@@ -228,22 +224,9 @@ Future barcodeScanning() async {
                     ),
                   ), 
 
-                ),
-                Center(
-
-                  child: SizedBox(
-                    height: 200.0,
-                    width: 200.0,
-                    child: Text("Tap to Scan"),
-                  ),
-
-
                 ), 
                 
-              ],
-
             ), 
-          ),
-    );
+          );
   }
 }

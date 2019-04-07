@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Instagram',
+      title: 'Can You Eat It?',
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(
           primarySwatch: Colors.blue,
