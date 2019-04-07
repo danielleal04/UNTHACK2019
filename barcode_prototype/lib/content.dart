@@ -13,6 +13,7 @@ class Content extends StatefulWidget {
 }
 
 class _Content extends State<Content> {
+
   String barcode = "";
   String token = "5vd0a9x2aeqtcr42b7nz4tngej773n";
   @override
@@ -26,7 +27,6 @@ class _Content extends State<Content> {
     var response = await http.get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
     var jsondata = jsonDecode(response.body); 
 
-    print(jsondata.toString());
     return jsondata; 
 
   }
@@ -105,6 +105,45 @@ class _Content extends State<Content> {
 
   }
 
+  void _showDialog() {
+
+    showDialog(
+
+      context: context, 
+      builder: (BuildContext context) {
+
+        return SingleChildScrollView(
+
+          child: AlertDialog(
+
+            title: Text("Information"),
+            content: displayInfo(getData), // displays info 
+
+            actions: <Widget>[
+
+              FlatButton(
+
+                child: Text("ok"), 
+                onPressed: () {
+
+                  Navigator.of(context).pop(); 
+
+                },
+
+              ),
+
+            ],
+
+          ),
+
+        );
+
+      }
+
+    );
+
+  }
+
   // Method for scanning barcode....
 Future barcodeScanning() async {
 //imageSelectorGallery();
@@ -113,6 +152,7 @@ Future barcodeScanning() async {
       String barcode = await BarcodeScanner.scan();
       setState(() => this.barcode = barcode);
       getData(); 
+      _showDialog();
 
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -137,27 +177,42 @@ Future barcodeScanning() async {
           appBar: new AppBar(
             title: new Text('Scan Barcode'),
           ),
-          body: new Center(
-            child: new Column(
+          body: Column(
+
               children: <Widget>[
-                new Container(
-                  child: new RaisedButton(
+
+                Center(
+
+                  child: SizedBox(
+                    height: 200.0,
+                    width: 200.0,
+                    child: IconButton(
+                      padding: EdgeInsets.all(0.0),
+                      icon: Icon(Icons.camera_alt, size: 200.0),
                       onPressed: () {
 
                         barcodeScanning(); 
 
-                      }, child: new Text("Capture image")),
-                  padding: const EdgeInsets.all(8.0),
-                ),
-                displayInfo(getData), // displays info 
-                new Padding(
-                  padding: const EdgeInsets.all(8.0),
-                ),
+                      },
+                    ),
+                  ), 
 
-                new SizedBox(height: 30,),
+                ),
+                Center(
+
+                  child: SizedBox(
+                    height: 200.0,
+                    width: 200.0,
+                    child: Text("Tap to Scan"),
+                  ),
+
+
+                ), 
+                
               ],
-            ),
-          )),
+
+            ), 
+          ),
     );
   }
 }
