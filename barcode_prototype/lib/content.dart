@@ -6,6 +6,8 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+//
+import 'package:barcode_prototype/main.dart';
 
 class Content extends StatefulWidget {
   @override
@@ -19,6 +21,30 @@ class _Content extends State<Content> {
   @override
   initState() {
     super.initState();
+  }
+
+  String checkForAllergies (String ingredients) {
+
+    String lowerIngredients = ingredients.toLowerCase(); 
+    var entryList = values.entries.toList();
+    String allergensFound = ""; 
+
+    for (int i = 0; i < values.length; i++){
+
+      if (lowerIngredients.contains(entryList[i].key)) 
+      {
+
+        allergensFound = allergensFound + entryList[i].key.toString() + " "; 
+
+      }
+        
+    }
+
+    if (allergensFound == "")
+      allergensFound = "None";
+
+    return allergensFound; 
+
   }
 
   Future<Map<String,dynamic>> getData() async {
@@ -81,7 +107,12 @@ class _Content extends State<Content> {
                               ),
 
                               TextSpan(
-                                text: "Ingredients: ${snapshot.data['products'][0]['ingredients']}",                          
+                                text: "Ingredients: ${snapshot.data['products'][0]['ingredients']}\n\n",                          
+                                style: TextStyle(fontWeight: FontWeight.w400), 
+                              ),
+
+                              TextSpan(
+                                text: "Allergies: ${checkForAllergies(snapshot.data['products'][0]['ingredients'])}",                          
                                 style: TextStyle(fontWeight: FontWeight.w400), 
                               ),
 

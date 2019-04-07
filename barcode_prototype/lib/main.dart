@@ -14,12 +14,12 @@ var firstName = TextEditingController();
 var lastName = TextEditingController();
 
 Map<String, bool> values = {
-    'Milk': false,
-    'Egg': false,
-    'Gluten': false,
-    'Fish': false,
-    'Soybean': false,
-    'Peanut': false,
+    'milk': false,
+    'egg': false,
+    'gluten': false,
+    'fish': false,
+    'soy': false,
+    'peanut': false,
   };
 
 void main() => runApp(new MyApp());
